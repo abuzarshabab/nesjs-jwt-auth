@@ -20,10 +20,9 @@ export class AuthService {
     return null;
   }
 
-  async login(email: string) {
+  async login(email: string, res) {
     const payload = { email };
-    return {
-      access_token: this.jwtService.sign(payload),
-    };
+    const token = this.jwtService.sign(payload) as string;
+    res.set({ Authorization: `Bearer ${token}` }).json({ hello: 'world' });
   }
 }

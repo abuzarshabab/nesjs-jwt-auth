@@ -32,8 +32,10 @@ export class PersonController {
 
   @Post('/login')
   @UseGuards(LocalAuthGuard)
-  async authenticateUser(@Body() { email }: LoginDto) {
-    return this.authService.login(email);
+  async authenticateUser(@Body() { email }: LoginDto, @Res() res) {
+    // User is valid, generate token
+    await this.authService.login(email, res);
+    return 'User is authenticated successfully';
   }
 
   @Post('/product')
@@ -64,6 +66,7 @@ export class PersonController {
       if (!productId) {
         new NotFoundException(`Sorry Product Id not found`);
       }
+
       console.log('productID: ' + productId._id);
       const userId = personId._id;
       const prodId = productId._id;
