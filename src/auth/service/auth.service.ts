@@ -1,26 +1,27 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { PersonService } from 'src/Person/person.service';
-import { Observable, from } from 'rxjs';
+import { DbRepository } from 'src/Database/db.repository';
+// import { PersonService } from 'src/Person/person.service';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly jwtService: JwtService,
-    private personService: PersonService,
+    private db: DbRepository,
+    private readonly jwtService: JwtService, // @Inject(forwardRef(() => PersonService)) // private personService: PersonService,
   ) {}
 
-  async validateUser(username: string, pass: string): Promise<any> {
-    const user = await this.personService.findByUserId(username);
-    if (user) {
+  async validateUser(email: string, password: string): Promise<any> {
+    const user = await this.db.findUserByEmail(email);
+
+    if (user && user.password === password) {
       const { password, ...result } = user;
       return result;
     }
     return null;
   }
 
-  async login(user: any) {
-    const payload = { username: user.username, sub: user.userId };
+  async login(email: string) {
+    const payload = { email };
     return {
       access_token: this.jwtService.sign(payload),
     };

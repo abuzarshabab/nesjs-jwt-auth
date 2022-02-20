@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { DbRepository } from './db.repositery';
+import { DbRepository } from './db.repository';
 
 @Module({
   imports: [],

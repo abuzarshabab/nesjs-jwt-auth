@@ -2,7 +2,7 @@ import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import * as cookieParser from 'cookie-parser';
 import { PersonModule } from './Person/person.module';
-const port: number = 3001;
+const port = 3001;
 
 async function bootstrap() {
   const app = await NestFactory.create(PersonModule);

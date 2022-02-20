@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { MongoClient, ObjectId, Timestamp } from 'mongodb';
+import { MongoClient } from 'mongodb';
 const url = 'mongodb://localhost:27017/nestSelfCrud';
 
 @Injectable()
@@ -27,8 +27,8 @@ export class DbRepository {
     return userInfo;
   }
   /*here we get the User id */
-  async findUserId(email: string) {
-    let userId = await this.db
+  async findUserByEmail(email: string) {
+    const userId = await this.db
       .collection('person')
       .findOne({ email: email }, { name: 0, age: 0, email: 0, password: 0 });
 
@@ -36,14 +36,14 @@ export class DbRepository {
   }
   /*Here we insert product information inside DB*/
   async addProduct(title: string, productName: string, price: number) {
-    let productInfo = await this.db
+    const productInfo = await this.db
       .collection('product')
       .insertOne({ title, productName, price });
     return productInfo;
   }
   /*Here we get product Id */
   async findProductId(productName: string) {
-    let productId = await this.db
+    const productId = await this.db
       .collection('product')
       .findOne(
         { productName: productName },
